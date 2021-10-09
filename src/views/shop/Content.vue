@@ -12,113 +12,19 @@
       <div class="product_item">
         <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
         <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
+          <h4 class="product_item_title">番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份</h4>
           <p class="product_item_sales">月售10件</p>
           <p class="product_item_price">
             <span class="product_item_yen">&yen;</span>33.6
             <span class="product_item_origin">&yen;66.6</span>
           </p>
+        </div>
+        <div class="product_number">
+          <span class="product_number_minus">-</span>
+          0
+          <span class="product_number_plus">+</span>
         </div>
       </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div><div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
-        <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
-          <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-
     </div>
   </div>
 </template>
@@ -158,10 +64,14 @@ export default {
   flex: 1;
   overflow-y: scroll;
   &_item{
+    position: relative;
     display: flex;
     padding: .12rem 0;
     margin: 0 .16rem;
     border-bottom: .01rem solid #F1F1F1;
+    &_detail{
+      overflow: hidden;
+    }
     &_img{
       width: 0.68rem;
       height: 0.68rem;
@@ -172,6 +82,9 @@ export default {
       font-size: 0.14rem;
       color: #333;
       margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     &_sales{
       margin: 0.06rem 0;
@@ -194,6 +107,30 @@ export default {
       text-decoration: line-through;
       margin-left: .06rem;
     }
+  .product_number{
+    position: absolute;
+    right: 0;
+    bottom: .12rem;
+    &_minus, &_plus{
+      display: inline-block;
+      width: 0.2rem;
+      height: 0.2rem;
+      border-radius: 50%;
+      font-size: .2rem;
+      text-align: center;
+      line-height: .16rem;
+    }
+    &_minus{
+      border: .01rem solid #666 ;
+      color: #666;
+      margin-right: .05rem;
+    }
+    &_plus{
+      background: #0091FF;
+      color: #fff;
+      margin-left: .05rem;
+    }
+  }
   }
 }
 </style>
