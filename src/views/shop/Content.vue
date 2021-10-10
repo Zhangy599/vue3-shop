@@ -1,22 +1,30 @@
 <template>
   <div class="content">
     <div class="category">
-      <div class="category_item category_item_active">全部商品</div>
-      <div class="category_item">秒杀</div>
-      <div class="category_item">新鲜水果</div>
-      <div class="category_item">休闲食品</div>
+      <div
+        :class="{
+          category_item: true,
+          category_item_active: categoryIndex === index,
+        }"
+        v-for="(item, index) in categories"
+        :key="item"
+        @click="getContentData(item.tab), (categoryIndex = index)"
+      >
+        {{ item.name }}
+      </div>
+      <!-- <div class="category_item">休闲食品</div>
       <div class="category_item">时令蔬菜</div>
-      <div class="category_item">肉蛋家禽</div>
+      <div class="category_item">肉蛋家禽</div> -->
     </div>
     <div class="product">
-      <div class="product_item">
-        <img class="product_item_img" src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
+      <div class="product_item" v-for="item in list" :key="item._id">
+        <img class="product_item_img" :src="item.imgUrl" alt="" />
         <div class="product_item_detail">
-          <h4 class="product_item_title">番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份番茄250g/份</h4>
-          <p class="product_item_sales">月售10件</p>
+          <h4 class="product_item_title">{{ item.name }}</h4>
+          <p class="product_item_sales">月售{{ item.sales }}件</p>
           <p class="product_item_price">
-            <span class="product_item_yen">&yen;</span>33.6
-            <span class="product_item_origin">&yen;66.6</span>
+            <span class="product_item_yen">&yen;</span>{{ item.price }}
+            <span class="product_item_origin">&yen;{{ item.oldPrice }}</span>
           </p>
         </div>
         <div class="product_number">
@@ -30,54 +38,94 @@
 </template>
 
 <script>
+import { get } from "../../utils/request";
+import { reactive, toRefs } from "vue";
+import { useRoute } from "vue-router";
+
+const useCurrentListEffect = () => {
+  const content = reactive({
+    list: [],
+    categoryIndex: 0,
+  });
+  let route = useRoute();
+  const getContentData = async (tab) => {
+    const result = await get(`/api/shop/${route.params.id}/products`, {
+      tab,
+    });
+    console.log(result);
+    if (result.errno === 0 && result?.data?.length) {
+      content.list = result.data;
+    }
+  };
+  return {
+    content,
+    getContentData
+  }
+};
+
 export default {
-  name: 'Content'
-}
+  name: "Content",
+  setup() {
+    const categories = [
+      { name: "全部商品", tab: "all" },
+      { name: "秒杀", tab: "seckill" },
+      { name: "新鲜水果", tab: "fruit" },
+    ];
+    const {content,getContentData} = useCurrentListEffect()
+
+    getContentData("all");
+    return {
+      ...toRefs(content),
+      categories,
+      getContentData,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.content{
+.content {
   display: flex;
   position: absolute;
   left: 0;
   right: 0;
   top: 1.5rem;
-  bottom: .5rem;
+  bottom: 0.5rem;
 }
-.category{
+.category {
   width: 0.76rem;
-  background: #F5F5F5;
+  background: #f5f5f5;
   height: 100%;
   overflow-y: scroll;
-  &_item{
+  &_item {
     line-height: 0.4rem;
     text-align: center;
     font-size: 0.14rem;
     color: #333;
-    &_active{
-      background: #FFF;
+    &_active {
+      background: #fff;
     }
   }
 }
 
-.product{
+.product {
   flex: 1;
   overflow-y: scroll;
-  &_item{
+  &_item {
     position: relative;
     display: flex;
-    padding: .12rem 0;
-    margin: 0 .16rem;
-    border-bottom: .01rem solid #F1F1F1;
-    &_detail{
+    padding: 0.12rem 0;
+    margin: 0 0.16rem;
+    border-bottom: 0.01rem solid #f1f1f1;
+    &_detail {
       overflow: hidden;
     }
-    &_img{
+    &_img {
       width: 0.68rem;
       height: 0.68rem;
       margin-right: 0.16rem;
     }
-    &_title{
+    &_title {
       line-height: 0.2rem;
       font-size: 0.14rem;
       color: #333;
@@ -86,51 +134,52 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    &_sales{
+    &_sales {
       margin: 0.06rem 0;
       font-size: 0.12rem;
       color: #333;
     }
-    &_price{
+    &_price {
       margin: 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: #E93B3B;
+      color: #e93b3b;
     }
-    &_yen{
-      font-size: .12rem;
+    &_yen {
+      font-size: 0.12rem;
     }
-    &_origin{
-      line-height: .2rem;
-      font-size: 0.12em;
+    &_origin {
+      line-height: 0.2rem;
+      font-size: 0.12rem;
       color: #999;
       text-decoration: line-through;
-      margin-left: .06rem;
+      margin-left: 0.06rem;
     }
-  .product_number{
-    position: absolute;
-    right: 0;
-    bottom: .12rem;
-    &_minus, &_plus{
-      display: inline-block;
-      width: 0.2rem;
-      height: 0.2rem;
-      border-radius: 50%;
-      font-size: .2rem;
-      text-align: center;
-      line-height: .16rem;
+    .product_number {
+      position: absolute;
+      right: 0;
+      bottom: 0.12rem;
+      &_minus,
+      &_plus {
+        display: inline-block;
+        width: 0.2rem;
+        height: 0.2rem;
+        border-radius: 50%;
+        font-size: 0.2rem;
+        text-align: center;
+        line-height: 0.16rem;
+      }
+      &_minus {
+        border: 0.01rem solid #666;
+        color: #666;
+        margin-right: 0.05rem;
+      }
+      &_plus {
+        background: #0091ff;
+        color: #fff;
+        margin-left: 0.05rem;
+      }
     }
-    &_minus{
-      border: .01rem solid #666 ;
-      color: #666;
-      margin-right: .05rem;
-    }
-    &_plus{
-      background: #0091FF;
-      color: #fff;
-      margin-left: .05rem;
-    }
-  }
   }
 }
 </style>
