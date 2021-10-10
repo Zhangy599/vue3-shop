@@ -10,6 +10,7 @@
     </div>
     <ShopInfo :item="item" :hideBorder="true" v-if="item.imgUrl" />
     <Content />
+    <Cart />
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import { useRouter, useRoute } from 'vue-router'
 import ShopInfo from '../../components/ShopInfo.vue'
 import { get } from '../../utils/request'
 import Content from './Content.vue'
+import Cart from './Cart.vue'
 
 const useShopInfoEffect = () => {
   const route = useRoute()
@@ -49,7 +51,8 @@ export default {
   name: 'Shop',
   components: {
     ShopInfo,
-    Content
+    Content,
+    Cart
   },
   setup () {
     const { getItemData, data } = useShopInfoEffect()
