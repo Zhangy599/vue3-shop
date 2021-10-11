@@ -6,10 +6,10 @@
           src="http://www.dell-lee.com/imgs/vue3/basket.png"
           class="check_icon_img"
         />
-      <div class="check_icon_tag">1</div>
+      <div class="check_icon_tag">{{total}}</div>
       </div>
       <div class="check_info">
-        总计：<span class="check_info_price">&yen;128</span>
+        总计：<span class="check_info_price">&yen; {{price}}</span>
       </div>
       <div class="check_btn">去结算</div>
     </div>
@@ -17,9 +17,52 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const useCartEffect = () => {
+  const store = useStore()
+  const route = useRoute()
+  const shopId = route.params.id
+  const cartList = store.state.cartList
+  const total = computed(() => {
+    const productList = cartList[shopId]
+    let count = 0
+    if (productList) {
+      for (const i in productList) {
+        count += productList[i].count
+      }
+    }
+    return count
+  })
+  const price = computed(() => {
+    const productList = cartList[shopId]
+    let count = 0
+    if (productList) {
+      for (const i in productList) {
+        const product = productList[i]
+        count += product.count * product.price
+      }
+    }
+    return count.toFixed(2)
+  })
+  return {
+    total,
+    price
+  }
+}
+
 export default {
-  name: "Cart",
-};
+  name: 'Cart',
+  setup () {
+    const { total, price } = useCartEffect()
+    return {
+      total,
+      price
+    }
+  }
+}
 </script>
 
 <style lang='scss' scoped>
@@ -46,17 +89,19 @@ export default {
     }
     &_tag{
       position: absolute;
-      right: .2rem;
+      left: .46rem;
       top: .04rem;
-      width: .2rem;
-      height: 0.2rem;
+      padding: 0 .04rem;
+      min-width: .2rem;
+      height: .2rem;
       background-color: #E93B3B;
-      border-radius: 50%;
+      border-radius: .1rem;
       font-size: 0.12rem;
       text-align: center;
       line-height: .2rem;
       color: #fff;
       transform: scale(.5);
+      transform-origin: left center;
     }
   }
   &_info{

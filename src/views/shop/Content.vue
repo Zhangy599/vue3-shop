@@ -28,9 +28,9 @@
           </p>
         </div>
         <div class="product_number">
-          <span class="product_number_minus">-</span>
+          <span class="product_number_minus" @click="changeCartItemInfo(shopId,item._id,item,-1)">-</span>
             {{cartList?.[shopId]?.[item._id]?.count || 0}}
-          <span class="product_number_plus" @click="addItemToCart(shopId,item._id,item)">+</span>
+          <span class="product_number_plus" @click="changeCartItemInfo(shopId,item._id,item,1)">+</span>
         </div>
       </div>
     </div>
@@ -38,69 +38,70 @@
 </template>
 
 <script>
-import { get } from "../../utils/request";
-import { reactive, toRefs } from "vue";
-import { useRoute } from "vue-router";
+import { get } from '../../utils/request'
+import { reactive, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 
-const useCartEffect = ()=>{
-   const store = useStore()
-   const cartList = store.state.cartList
-   const addItemToCart = (shopId,productId,productInfo)=>{
-     store.commit('addItemToCart',{
-       shopId,
-       productId,
-       productInfo
-     })
-   }
-   return {
-     cartList,
-     addItemToCart
-   }
+const useCartEffect = () => {
+  const store = useStore()
+  const cartList = store.state.cartList
+  const changeCartItemInfo = (shopId, productId, productInfo, num) => {
+    store.commit('addItemToCart', {
+      shopId,
+      productId,
+      productInfo,
+      num
+    })
+  }
+  return {
+    cartList,
+    changeCartItemInfo
+  }
 }
 
 const useCurrentListEffect = (shopId) => {
   const content = reactive({
     list: [],
-    categoryIndex: 0,
-  });
+    categoryIndex: 0
+  })
   const getContentData = async (tab) => {
     const result = await get(`/api/shop/${shopId}/products`, {
-      tab,
-    });
+      tab
+    })
     if (result.errno === 0 && result?.data?.length) {
-      content.list = result.data;
+      content.list = result.data
     }
-  };
+  }
   return {
     content,
     getContentData
   }
-};
+}
 
 export default {
-  name: "Content",
-  setup() {
+  name: 'Content',
+  setup () {
     const categories = [
-      { name: "全部商品", tab: "all" },
-      { name: "秒杀", tab: "seckill" },
-      { name: "新鲜水果", tab: "fruit" },
-    ];
-    const route = useRoute();
+      { name: '全部商品', tab: 'all' },
+      { name: '秒杀', tab: 'seckill' },
+      { name: '新鲜水果', tab: 'fruit' }
+    ]
+    const route = useRoute()
     const shopId = route.params.id
-    const {content,getContentData} = useCurrentListEffect(shopId)
-    const { cartList, addItemToCart } = useCartEffect()
-    getContentData("all");
+    const { content, getContentData } = useCurrentListEffect(shopId)
+    const { cartList, changeCartItemInfo } = useCartEffect()
+    getContentData('all')
     return {
       ...toRefs(content),
       categories,
       getContentData,
       cartList,
       shopId,
-      addItemToCart
-    };
-  },
-};
+      changeCartItemInfo
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
