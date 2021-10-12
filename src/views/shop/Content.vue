@@ -29,7 +29,7 @@
         </div>
         <div class="product_number">
           <span class="product_number_minus" @click="changeCartItemInfo(shopId,item._id,item,-1)">-</span>
-            {{cartList?.[shopId]?.[item._id]?.count || 0}}
+            {{item.count || 0}}
           <span class="product_number_plus" @click="changeCartItemInfo(shopId,item._id,item,1)">+</span>
         </div>
       </div>
@@ -41,24 +41,7 @@
 import { get } from '../../utils/request'
 import { reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-
-const useCartEffect = () => {
-  const store = useStore()
-  const cartList = store.state.cartList
-  const changeCartItemInfo = (shopId, productId, productInfo, num) => {
-    store.commit('addItemToCart', {
-      shopId,
-      productId,
-      productInfo,
-      num
-    })
-  }
-  return {
-    cartList,
-    changeCartItemInfo
-  }
-}
+import { useCommonCartEffect } from './commonCartEffect'
 
 const useCurrentListEffect = (shopId) => {
   const content = reactive({
@@ -90,13 +73,12 @@ export default {
     const route = useRoute()
     const shopId = route.params.id
     const { content, getContentData } = useCurrentListEffect(shopId)
-    const { cartList, changeCartItemInfo } = useCartEffect()
+    const { changeCartItemInfo } = useCommonCartEffect()
     getContentData('all')
     return {
       ...toRefs(content),
       categories,
       getContentData,
-      cartList,
       shopId,
       changeCartItemInfo
     }

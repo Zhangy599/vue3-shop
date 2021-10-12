@@ -1,5 +1,27 @@
 <template>
   <div class="cart">
+    <div class="product">
+        <template  v-for="item in productList" :key="item._id">
+          <div v-if="item.count > 0" class="product_item">
+            <div class="product_item_checked iconfont"
+                 v-html="item.check ? '&#xe70f;' : '&#xe66c;'">
+            </div>
+            <img class="product_item_img" :src="item.imgUrl" alt="" />
+            <div class="product_item_detail">
+              <h4 class="product_item_title">{{ item.name }}</h4>
+              <p class="product_item_price">
+                <span class="product_item_yen">&yen;</span>{{ item.price }}
+                <span class="product_item_origin">&yen;{{ item.oldPrice }}</span>
+              </p>
+            </div>
+            <div class="product_number">
+              <span class="product_number_minus" @click="changeCartItemInfo(shopId,item._id,item,-1)">-</span>
+                {{item?.count || 0}}
+              <span class="product_number_plus" @click="changeCartItemInfo(shopId,item._id,item,1)">+</span>
+            </div>
+          </div>
+        </template>
+    </div>
     <div class="check">
       <div class="check_icon">
         <img
@@ -20,11 +42,10 @@
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-
-const useCartEffect = () => {
+import { useCommonCartEffect } from './commonCartEffect'
+const useCartEffect = (shopId) => {
+  const { changeCartItemInfo } = useCommonCartEffect()
   const store = useStore()
-  const route = useRoute()
-  const shopId = route.params.id
   const cartList = store.state.cartList
   const total = computed(() => {
     const productList = cartList[shopId]
@@ -47,19 +68,30 @@ const useCartEffect = () => {
     }
     return count.toFixed(2)
   })
+  const productList = computed(() => {
+    const productInfo = cartList[shopId] || []
+    return productInfo
+  })
   return {
     total,
-    price
+    price,
+    productList,
+    changeCartItemInfo
   }
 }
 
 export default {
   name: 'Cart',
   setup () {
-    const { total, price } = useCartEffect()
+    const route = useRoute()
+    const shopId = route.params.id
+    const { total, price, productList, changeCartItemInfo } = useCartEffect(shopId)
     return {
       total,
-      price
+      price,
+      productList,
+      changeCartItemInfo,
+      shopId
     }
   }
 }
@@ -71,6 +103,82 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
+}
+.product {
+  flex: 1;
+  overflow-y: scroll;
+  background: #fff;
+  &_item {
+    position: relative;
+    display: flex;
+    padding: 0.12rem 0;
+    margin: 0 0.16rem;
+    border-bottom: 0.01rem solid #f1f1f1;
+    &_checked{
+      color: #0091FF;
+      font-size: .2rem;
+      line-height: .5rem;
+      margin-right: .2rem;
+    }
+    &_detail {
+      overflow: hidden;
+    }
+    &_img {
+      width: 0.46rem;
+      height: 0.46rem;
+      margin-right: 0.16rem;
+    }
+    &_title {
+      line-height: 0.2rem;
+      font-size: 0.14rem;
+      color: #333;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &_price {
+      margin: .06rem 0 0 0;
+      line-height: 0.2rem;
+      font-size: 0.14rem;
+      color: #e93b3b;
+    }
+    &_yen {
+      font-size: 0.12rem;
+    }
+    &_origin {
+      line-height: 0.2rem;
+      font-size: 0.12rem;
+      color: #999;
+      text-decoration: line-through;
+      margin-left: 0.06rem;
+    }
+    .product_number {
+      position: absolute;
+      right: 0;
+      bottom: 0.12rem;
+      &_minus,
+      &_plus {
+        display: inline-block;
+        width: 0.2rem;
+        height: 0.2rem;
+        border-radius: 50%;
+        font-size: 0.2rem;
+        text-align: center;
+        line-height: 0.16rem;
+      }
+      &_minus {
+        border: 0.01rem solid #666;
+        color: #666;
+        margin-right: 0.05rem;
+      }
+      &_plus {
+        background: #0091ff;
+        color: #fff;
+        margin-left: 0.05rem;
+      }
+    }
+  }
 }
 .check {
   height: 0.49rem;
